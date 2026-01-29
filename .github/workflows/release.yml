@@ -65,24 +65,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Update REST API Docker Hub description
-        uses: peter-evans/dockerhub-description@v4
-        with:
-          username: ${{ env.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: ${{ env.REST_API_IMAGE }}
-          readme-filepath: ./DOCKERHUB_README.md
-          short-description: "On-premises RADIUS authentication REST API with OkerNet Cloud integration"
-
-      - name: Update FreeRADIUS Docker Hub description
-        uses: peter-evans/dockerhub-description@v4
-        with:
-          username: ${{ env.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: ${{ env.RADIUS_IMAGE }}
-          readme-filepath: ./radius/DOCKERHUB_README.md
-          short-description: "FreeRADIUS server for Radius Proxy with REST API authentication"
-
       - name: Create image summary
         run: |
           echo "## Docker Images Published" >> $GITHUB_STEP_SUMMARY
