@@ -1,0 +1,76 @@
+rest {
+    connect_uri = "$ENV{REST_BASE_URL}"
+
+    # Don't require connections at startup - create them on demand
+    pool {
+        start = 0
+        min = 0
+    }
+
+    authorize {
+        uri    = "${..connect_uri}/authorize"
+        method = "post"
+        body   = "json"
+
+        data = "{\
+          \"username\": \"%{User-Name}\", \
+          \"password\": \"%{User-Password}\", \
+          \"callingStationId\": \"%{Calling-Station-ID}\", \
+          \"calledStationId\": \"%{Called-Station-ID}\", \
+          \"nasIp\": \"%{NAS-IP-Address}\" \
+        }"
+    }
+
+    authenticate {
+        uri    = "${..connect_uri}/authenticate"
+        method = "post"
+        body   = "json"
+
+        data = "{\
+          \"username\": \"%{User-Name}\", \
+          \"password\": \"%{User-Password}\", \
+          \"callingStationId\": \"%{Calling-Station-ID}\", \
+          \"calledStationId\": \"%{Called-Station-ID}\", \
+          \"nasIp\": \"%{NAS-IP-Address}\" \
+        }"
+    }
+
+    accounting {
+        uri    = "${..connect_uri}/accounting"
+        method = "post"
+        body   = "json"
+
+        data = "{\
+          \"username\": \"%{User-Name}\", \
+          \"acctStatusType\": \"%{Acct-Status-Type}\", \
+          \"acctSessionId\": \"%{Acct-Session-Id}\", \
+          \"acctUniqueSessionId\": \"%{Acct-Unique-Session-Id}\", \
+          \"acctSessionTime\": %{%{Acct-Session-Time}:-null}, \
+          \"acctDelayTime\": %{%{Acct-Delay-Time}:-0}, \
+          \"acctInputOctets\": %{%{Acct-Input-Octets}:-null}, \
+          \"acctOutputOctets\": %{%{Acct-Output-Octets}:-null}, \
+          \"acctInputGigawords\": %{%{Acct-Input-Gigawords}:-null}, \
+          \"acctOutputGigawords\": %{%{Acct-Output-Gigawords}:-null}, \
+          \"acctInputPackets\": %{%{Acct-Input-Packets}:-null}, \
+          \"acctOutputPackets\": %{%{Acct-Output-Packets}:-null}, \
+          \"acctAuthentic\": \"%{Acct-Authentic}\", \
+          \"acctTerminateCause\": \"%{Acct-Terminate-Cause}\", \
+          \"nasIpAddress\": \"%{NAS-IP-Address}\", \
+          \"nasPort\": %{%{NAS-Port}:-0}, \
+          \"nasPortType\": \"%{NAS-Port-Type}\", \
+          \"nasPortId\": \"%{NAS-Port-Id}\", \
+          \"nasIdentifier\": \"%{NAS-Identifier}\", \
+          \"serviceType\": \"%{Service-Type}\", \
+          \"framedProtocol\": \"%{Framed-Protocol}\", \
+          \"framedIpAddress\": \"%{Framed-IP-Address}\", \
+          \"sessionTimeout\": %{%{Session-Timeout}:-null}, \
+          \"idleTimeout\": %{%{Idle-Timeout}:-null}, \
+          \"calledStationId\": \"%{Called-Station-Id}\", \
+          \"callingStationId\": \"%{Calling-Station-Id}\", \
+          \"eventTimestamp\": \"%{Event-Timestamp}\", \
+          \"mikrotikRateLimit\": \"%{Mikrotik-Rate-Limit}\", \
+          \"ascendDataRate\": %{%{X-Ascend-Data-Rate}:-null}, \
+          \"ascendXmitRate\": %{%{Ascend-Xmit-Rate}:-null} \
+        }"
+    }
+}

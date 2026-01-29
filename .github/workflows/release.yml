@@ -1,0 +1,98 @@
+name: Build and Push Docker Images
+
+on:
+  release:
+    types: [published]
+
+env:
+  DOCKERHUB_USERNAME: okernet
+  REST_API_IMAGE: okernet/radius-proxy
+  RADIUS_IMAGE: okernet/radius
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract version from release tag
+        id: version
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Building version: $VERSION"
+
+      - name: Build and push REST API image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ${{ env.REST_API_IMAGE }}:${{ steps.version.outputs.version }}
+            ${{ env.REST_API_IMAGE }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push FreeRADIUS image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./radius
+          file: ./radius/Dockerfile
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ${{ env.RADIUS_IMAGE }}:${{ steps.version.outputs.version }}
+            ${{ env.RADIUS_IMAGE }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Update REST API Docker Hub description
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: ${{ env.REST_API_IMAGE }}
+          readme-filepath: ./DOCKERHUB_README.md
+          short-description: "On-premises RADIUS authentication REST API with OkerNet Cloud integration"
+
+      - name: Update FreeRADIUS Docker Hub description
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: ${{ env.RADIUS_IMAGE }}
+          readme-filepath: ./radius/DOCKERHUB_README.md
+          short-description: "FreeRADIUS server for Radius Proxy with REST API authentication"
+
+      - name: Create image summary
+        run: |
+          echo "## Docker Images Published" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### REST API" >> $GITHUB_STEP_SUMMARY
+          echo "- \`${{ env.REST_API_IMAGE }}:${{ steps.version.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- \`${{ env.REST_API_IMAGE }}:latest\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### FreeRADIUS" >> $GITHUB_STEP_SUMMARY
+          echo "- \`${{ env.RADIUS_IMAGE }}:${{ steps.version.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- \`${{ env.RADIUS_IMAGE }}:latest\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Docker Hub descriptions updated." >> $GITHUB_STEP_SUMMARY

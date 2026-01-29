@@ -1,0 +1,51 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Documentation
+*.md
+!README.md
+
+# Tests
+test
+coverage
+*.spec.ts
+
+# Development files
+docker-compose.dev.yml
+.eslintrc.js
+.prettierrc
+jest.config.js
+
+# Data
+data
+*.sqlite
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Radius server (separate image)
+radius

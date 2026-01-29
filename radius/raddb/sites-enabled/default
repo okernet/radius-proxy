@@ -1,0 +1,77 @@
+server default {
+
+    listen {
+        type   = auth
+        ipaddr = $ENV{RADIUS_LISTEN_IP}
+        port   = $ENV{RADIUS_AUTH_PORT}
+    }
+
+    listen {
+        type   = acct
+        ipaddr = $ENV{RADIUS_LISTEN_IP}
+        port   = $ENV{RADIUS_ACCT_PORT}
+    }
+
+    authorize {
+        update control {
+            &REST-HTTP-Header += "$ENV{REST_API_HEADER_NAME}: $ENV{REST_API_KEY}"
+        }
+
+        # Get user credentials from REST API
+        rest
+
+        # Set Auth-Type based on what authentication method the client is using
+        if (&User-Password) {
+            # PAP - let REST API validate the password
+            update control {
+                Auth-Type := REST
+            }
+        }
+        elsif (&CHAP-Password) {
+            # CHAP - use chap module with Cleartext-Password from REST
+            update control {
+                Auth-Type := CHAP
+            }
+        }
+        elsif (&MS-CHAP-Challenge && &MS-CHAP-Response) {
+            # MS-CHAP v1
+            update control {
+                Auth-Type := MS-CHAP
+            }
+        }
+        elsif (&MS-CHAP-Challenge && &MS-CHAP2-Response) {
+            # MS-CHAP v2
+            update control {
+                Auth-Type := MS-CHAP
+            }
+        }
+    }
+
+    authenticate {
+        # PAP via REST API
+        Auth-Type REST {
+            update control {
+                &REST-HTTP-Header += "$ENV{REST_API_HEADER_NAME}: $ENV{REST_API_KEY}"
+            }
+            rest
+        }
+
+        # CHAP uses Cleartext-Password from REST response
+        Auth-Type CHAP {
+            chap
+        }
+
+        # MS-CHAP v1/v2 uses Cleartext-Password from REST response
+        Auth-Type MS-CHAP {
+            mschap
+        }
+    }
+
+    accounting {
+        update control {
+            &REST-HTTP-Header += "$ENV{REST_API_HEADER_NAME}: $ENV{REST_API_KEY}"
+        }
+
+        rest
+    }
+}

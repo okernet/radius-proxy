@@ -1,0 +1,39 @@
+services:
+  rest-api:
+    image: okernet/radius-proxy
+    ports:
+      - 3080:3080
+    volumes:
+      - radius-data:/usr/app/data
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:3080/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 30s
+
+  radius:
+    image: okernet/radius
+    ports:
+      - "1812:1812/udp"
+      - "1813:1813/udp"
+    environment:
+      REST_BASE_URL: "http://rest-api:3080"
+      REST_AUTH_ENDPOINT: "/radius/auth"
+      REST_ACCT_ENDPOINT: "/radius/accounting"
+      REST_API_HEADER_NAME: "X-API-Key"
+      REST_API_KEY: ${RADIUS_API_KEY}
+      RADIUS_CLIENT_IP: "0.0.0.0"
+      RADIUS_CLIENT_SECRET: ${RADIUS_CLIENT_SECRET}
+      RADIUS_LISTEN_IP: "0.0.0.0"
+      RADIUS_AUTH_PORT: "1812"
+      RADIUS_ACCT_PORT: "1813"
+      FREERADIUS_DEBUG: "0"
+    depends_on:
+      rest-api:
+        condition: service_healthy
+
+volumes:
+  radius-data:
