@@ -1,6 +1,6 @@
 # Radius Proxy
 
-On-premises RADIUS authentication server that integrates with OkerNet Cloud. Provides local RADIUS authentication with cloud synchronization for user management, supporting offline operation when cloud connectivity is unavailable.
+An on-premises RADIUS authentication server that integrates with OkerNet Cloud. Provides local RADIUS authentication with cloud synchronization for user management, supporting offline operation when cloud connectivity is unavailable.
 
 ## Features
 
@@ -33,7 +33,7 @@ Pre-built Docker images are available on Docker Hub:
 curl -O https://raw.githubusercontent.com/okernet/radius-proxy/refs/heads/main/docker-compose.prod.yml
 ```
 
-### 2. Create environment file
+### 2. Create an environment file
 
 Create a `.env` file with your configuration:
 
@@ -131,7 +131,7 @@ cp .env.example .env
 # Edit .env with your development settings
 ```
 
-### 4. Start development environment
+### 4. Start the development environment
 
 ```bash
 docker compose -f docker-compose.dev.yml up
@@ -173,24 +173,19 @@ This starts:
 
 ## Architecture Overview
 
-```
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│  RADIUS Client  │────▶│   FreeRADIUS    │────▶│    REST API     │
-│  (Router/AP)    │     │   (radius)      │     │   (rest-api)    │
-└─────────────────┘     └─────────────────┘     └────────┬────────┘
-                                                         │
-                              ┌──────────────────────────┼──────────────────────────┐
-                              │                          │                          │
-                              ▼                          ▼                          ▼
-                      ┌───────────────┐         ┌───────────────┐         ┌─────────────────┐
-                      │    SQLite     │         │  Cloud Sync   │         │   Accounting    │
-                      │   Database    │         │   Service     │         │    Upload       │
-                      └───────────────┘         └───────┬───────┘         └────────┬────────┘
-                                                        │                          │
-                                                        ▼                          ▼
-                                                ┌─────────────────────────────────────────┐
-                                                │           OkerNet Cloud                 │
-                                                └─────────────────────────────────────────┘
+```mermaid
+%%{init: {'flowchart': {'curve': 'linear'}}}%%
+flowchart LR
+  RC["RADIUS Client<br/>(Router/AP)"] --> FR["FreeRADIUS<br/>(radius)"]
+  FR --> API["REST API<br/>(rest-api)"]
+
+  %% split/junction under REST API
+  API --> split(( ))
+  split --> SQLite["SQLite<br/>Database"]
+  split --> CloudSync["Cloud Sync<br/>Service"]
+
+  %% all three feed into OkerNet Cloud
+  CloudSync --> OkerNet
 ```
 
 **Components:**
@@ -199,7 +194,7 @@ This starts:
 - **REST API**: NestJS application managing auth logic, local database, and cloud sync
 - **SQLite Database**: Local cache of users/devices for offline operation
 - **Cloud Sync**: Periodic synchronization of users and devices from OkerNet Cloud
-- **Accounting Upload**: Batch upload of RADIUS accounting records to cloud
+- **Accounting Upload**: Batch upload of RADIUS accounting records to the cloud
 
 ## License
 
