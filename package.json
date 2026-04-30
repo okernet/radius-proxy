@@ -23,7 +23,7 @@
     "@nestjs/axios": "^4.0.1",
     "@nestjs/common": "^11.1.12",
     "@nestjs/config": "^4.0.2",
-    "@nestjs/core": "^11.1.12",
+    "@nestjs/core": "^11.1.19",
     "@nestjs/platform-fastify": "^11.1.12",
     "@nestjs/schedule": "^6.1.0",
     "@nestjs/swagger": "^11.2.5",
