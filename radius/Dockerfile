@@ -1,4 +1,4 @@
-FROM --platform=${TARGETPLATFORM} freeradius/freeradius-server:latest
+FROM freeradius/freeradius-server:latest
 
 # Copy custom configuration files
 COPY raddb/clients.conf /etc/freeradius/clients.conf
@@ -12,7 +12,8 @@ RUN ln -sf /etc/freeradius/mods-available/rest /etc/freeradius/mods-enabled/rest
 
 # Copy and set up entrypoint
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+RUN sed -i 's/\r$//' /docker-entrypoint.sh && \
+    chmod +x /docker-entrypoint.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["freeradius", "-f", "-l", "stdout"]    

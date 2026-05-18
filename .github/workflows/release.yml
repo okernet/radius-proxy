@@ -45,7 +45,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           tags: |
             ${{ env.REST_API_IMAGE }}:${{ steps.version.outputs.version }}
             ${{ env.REST_API_IMAGE }}:latest
@@ -58,7 +58,7 @@ jobs:
           context: ./radius
           file: ./radius/Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           tags: |
             ${{ env.RADIUS_IMAGE }}:${{ steps.version.outputs.version }}
             ${{ env.RADIUS_IMAGE }}:latest
