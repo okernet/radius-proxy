@@ -1,4 +1,4 @@
-FROM freeradius/freeradius-server:latest
+FROM --platform=${TARGETPLATFORM} freeradius/freeradius-server:latest
 
 # Copy custom configuration files
 COPY raddb/clients.conf /etc/freeradius/clients.conf

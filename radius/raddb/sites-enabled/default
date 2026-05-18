@@ -67,6 +67,13 @@ server default {
         }
     }
 
+    preacct {
+        preprocess
+        acct_unique
+        suffix
+        files
+    }
+
     accounting {
         update control {
             &REST-HTTP-Header += "$ENV{REST_API_HEADER_NAME}: $ENV{REST_API_KEY}"

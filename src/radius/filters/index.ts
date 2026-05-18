@@ -1,1 +1,1 @@
-export * from './freeradius-exception.filter';
+export * from './radius-exception.filter';

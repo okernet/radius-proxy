@@ -1,6 +1,6 @@
 services:
   rest-api:
-    image: okernet/radius-proxy
+    image: okernet/radius-proxy:latest
     ports:
       - 3080:3080
     volumes:
@@ -15,7 +15,7 @@ services:
       start_period: 30s
 
   radius:
-    image: okernet/radius
+    image: okernet/radius:latest
     ports:
       - "1812:1812/udp"
       - "1813:1813/udp"
