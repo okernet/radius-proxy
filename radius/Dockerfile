@@ -1,4 +1,4 @@
-FROM freeradius/freeradius-dev:v3.2.x-alpine
+FROM freeradius/freeradius-dev:latest
 
 # Copy custom configuration files
 COPY raddb/clients.conf /etc/freeradius/clients.conf
