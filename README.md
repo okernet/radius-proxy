@@ -19,7 +19,7 @@ Pre-built Docker images are available on Docker Hub:
 | [okernet/radius-proxy](https://hub.docker.com/r/okernet/radius-proxy) | REST API server (NestJS) | `docker pull okernet/radius-proxy` |
 | [okernet/radius](https://hub.docker.com/r/okernet/radius) | FreeRADIUS server | `docker pull okernet/radius` |
 
-**Supported Architectures:** `linux/amd64`, `linux/arm64`, `linux/arm/v7`
+**Supported Architectures:** `linux/amd64`, `linux/arm64`
 
 **Tags:**
 - `latest` - Latest stable release
