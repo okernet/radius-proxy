@@ -42,7 +42,7 @@ RUN npm ci --omit=dev && \
 RUN apk del python3 make g++
 
 # Copy built application from builder stage
-COPY --from=builder /usr/app/dist ./dist
+COPY --from=builder /usr/app/dist/src ./dist
 
 # Create data directory for SQLite
 RUN mkdir -p /usr/app/data && chown -R nestjs:nodejs /usr/app/data

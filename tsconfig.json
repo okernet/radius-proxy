@@ -9,9 +9,12 @@
     "preserveWatchOutput": true,
     "target": "ESNext",
     "sourceMap": true,
-    "outDir": "./dist",
+    "rootDir": "src",
+    "outDir": "dist",
+    "paths": {
+      "src/*": ["./src/*"]
+    },
     "strict": true,
-    "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
