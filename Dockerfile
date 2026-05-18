@@ -13,7 +13,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 # Copy source code
-COPY tsconfig.json nest-cli.json ./
+COPY tsconfig.json nest-cli.json .swcrc tsconfig.build.json ./
 COPY src ./src
 
 # Build the application
