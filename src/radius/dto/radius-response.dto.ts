@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 /**
  * FreeRADIUS rlm_rest module expects responses with control: and reply: prefixed attributes.
- * - control: attributes are used internally by FreeRADIUS for authentication
+ * - control: attributes used by FreeRADIUS internally for authentication
  * - reply: attributes are sent back to the NAS in the Access-Accept packet
  */
 export interface AuthorizeResponse {
@@ -23,7 +23,7 @@ export interface AuthenticateResponse {
 }
 
 /**
- * DTO class for Swagger documentation of authorize response
+ * DTO class for Swagger documentation of 'authorize' response
  */
 export class AuthorizeResponseDto {
   @ApiProperty({ description: 'Cleartext password for FreeRADIUS to validate' })
@@ -40,7 +40,7 @@ export class AuthorizeResponseDto {
 }
 
 /**
- * DTO class for Swagger documentation of authenticate response
+ * DTO class for Swagger documentation of 'authenticate' response
  */
 export class AuthenticateResponseDto {
   @ApiPropertyOptional({ description: 'Mikrotik rate limit string (e.g., "10M/10M")' })
@@ -80,7 +80,7 @@ export class ResponseBuilder {
   }
 
   /**
-   * Set Mikrotik rate limit (e.g., "10M/10M" for 10Mbps up/down)
+   * Set the Mikrotik rate limit (e.g., "10M/10M" for 10 Mbps up/down)
    */
   setRateLimit(rateLimit: string): this {
     return this.reply('Mikrotik-Rate-Limit', rateLimit);
@@ -101,7 +101,7 @@ export class ResponseBuilder {
   }
 
   /**
-   * Set reply message
+   * Set a reply message
    */
   setReplyMessage(message: string): this {
     return this.reply('Reply-Message', message);

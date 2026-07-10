@@ -9,13 +9,14 @@ export const envSchema = z.object({
   // It's unrecommended to change the timezone since the cloud API uses UTC timezone for all datetime values
   TZ: z.string().optional().default('UTC'),
 
-  // Keycloak Auth (for cloud sync)
-  OIDC_ISSUER: z.string(),
+  // OkerCloud Auth (for cloud sync)
+  TENANT_ID: z.uuid(),
+  OIDC_ISSUER: z.url(),
   OIDC_CLIENT_ID: z.string(),
   OIDC_CLIENT_SECRET: z.string(),
 
   // Cloud Connection
-  CLOUD_API_URL: z.string().transform((url) => url.replace(/\/+$/, '')),
+  CLOUD_API_URL: z.url().transform((url) => url.replace(/\/+$/, '')),
   CLOUD_TIMEOUT_MS: z.coerce.number().int().positive().default(10000),
 
   // Sync Settings

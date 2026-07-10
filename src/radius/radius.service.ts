@@ -1,11 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LocalSubscription } from '../entities/subscription.entity';
-import { AccountingQueue, AccountingQueueStatus } from '../entities/accounting-queue.entity';
-import { RadiusAuthorizeRequestDto, RadiusAccountingRequestDto } from './dto/radius-request.dto';
-import { AuthorizeResponse, AuthenticateResponse, ResponseBuilder } from './dto/radius-response.dto';
-import { RadiusUserNotFoundException, RadiusAuthRejectedException, RadiusDisallowedException } from './exceptions';
+import { AccountingQueue, AccountingQueueStatus, LocalSubscription } from 'src/entities';
+import {
+  AuthenticateResponse,
+  AuthorizeResponse,
+  RadiusAccountingRequestDto,
+  RadiusAuthorizeRequestDto,
+  ResponseBuilder,
+} from 'src/radius/dto';
+import { RadiusAuthRejectedException, RadiusDisallowedException, RadiusUserNotFoundException } from './exceptions';
 
 @Injectable()
 export class RadiusService {
@@ -44,13 +48,7 @@ export class RadiusService {
     }
 
     this.logger.debug(`Authorization successful for user: ${username}`);
-
-    const response = new ResponseBuilder()
-      .setPassword(subscription.password)
-      .setRateLimit(subscription.bandwidth)
-      .build();
-
-    return response;
+    return new ResponseBuilder().setPassword(subscription.password).setRateLimit(subscription.bandwidth).build();
   }
 
   /**
@@ -88,9 +86,7 @@ export class RadiusService {
 
     this.logger.debug(`Authentication successful for user: ${username}`);
 
-    const response = new ResponseBuilder().setRateLimit(subscription.bandwidth).build();
-
-    return response;
+    return new ResponseBuilder().setRateLimit(subscription.bandwidth).build();
   }
 
   /**

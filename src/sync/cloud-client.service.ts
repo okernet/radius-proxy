@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { EnvService } from '../env/env.service';
+import { EnvService } from 'src/env';
 import { RadiusAccountingRequestDto } from 'src/radius/dto';
 
 interface TokenResponse {
@@ -40,7 +40,7 @@ export class CloudClientService {
       return this.accessToken;
     }
 
-    this.logger.debug('Fetching new access token from Keycloak');
+    this.logger.debug('Fetching new access token from Oker Cloud');
 
     const response = await fetch(`${this.env.get('OIDC_ISSUER')}/protocol/openid-connect/token`, {
       method: 'POST',
@@ -82,7 +82,7 @@ export class CloudClientService {
       throw new Error(`Cloud API error: ${response.status}`);
     }
 
-    return response.json() as Promise<T>;
+    return (await response.json()) as Promise<T>;
   }
 
   async fetchSubscriptions(since?: Date): Promise<SubscriptionSyncResponse> {
@@ -92,7 +92,7 @@ export class CloudClientService {
     }
 
     const query = params.toString();
-    const path = `/api/v1/sync/subscriptions${query ? `?${query}` : ''}`;
+    const path = `/api/v1/tenants/${this.env.get('TENANT_ID')}/sync/subscriptions${query ? `?${query}` : ''}`;
 
     this.logger.debug(`Fetching subscriptions from cloud: ${path}`);
     return this.fetch<SubscriptionSyncResponse>(path);
@@ -100,12 +100,12 @@ export class CloudClientService {
 
   async fetchFullSnapshot(): Promise<SubscriptionSyncResponse> {
     this.logger.debug('Fetching full subscription snapshot from cloud');
-    return this.fetch<SubscriptionSyncResponse>('/api/v1/sync/full-snapshot');
+    return this.fetch<SubscriptionSyncResponse>(`/api/v1/tenants/${this.env.get('TENANT_ID')}/sync/full-snapshot`);
   }
 
   async uploadAccountingBatch(records: RadiusAccountingRequestDto[]): Promise<AccountingBatchResponse> {
     this.logger.debug(`Uploading ${records.length} accounting records to cloud`);
-    return this.fetch<AccountingBatchResponse>('/api/v1/sync/accounting/batch', {
+    return this.fetch<AccountingBatchResponse>(`/api/v1/tenants/${this.env.get('TENANT_ID')}/sync/accounting/batch`, {
       method: 'POST',
       body: JSON.stringify({ records }),
     });

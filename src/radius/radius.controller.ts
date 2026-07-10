@@ -14,12 +14,7 @@ import {
   RadiusAuthorizeRequestDto as AuthorizeRequestDto,
   RadiusAccountingRequestDto as AccountingRequestDto,
 } from './dto/radius-request.dto';
-import {
-  AuthorizeResponse,
-  AuthenticateResponse,
-  AuthorizeResponseDto,
-  AuthenticateResponseDto,
-} from './dto/radius-response.dto';
+import { AuthorizeResponse, AuthenticateResponse, AuthorizeResponseDto, AuthenticateResponseDto } from 'src/radius/dto';
 import { RadiusGuard } from './guards';
 import { RadiusExceptionFilter } from './filters';
 
