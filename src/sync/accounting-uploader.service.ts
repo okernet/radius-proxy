@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AccountingQueue, AccountingQueueStatus } from 'src/entities';
-import type { EnvService } from 'src/env';
-import type { RadiusAccountingRequestDto } from 'src/radius/dto';
+import { EnvService } from 'src/env';
+import { RadiusAccountingRequestDto } from 'src/radius/dto';
 import { In, type Repository } from 'typeorm';
-import type { CloudClientService } from './cloud-client.service';
+import { CloudClientService } from './cloud-client.service';
 
 @Injectable()
 export class AccountingUploaderService {

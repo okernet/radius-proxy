@@ -15,13 +15,13 @@ import {
 	type AuthorizeResponse,
 	AuthorizeResponseDto,
 } from 'src/radius/dto';
-import type {
+import {
 	RadiusAccountingRequestDto as AccountingRequestDto,
 	RadiusAuthorizeRequestDto as AuthorizeRequestDto,
 } from './dto/radius-request.dto';
 import { RadiusExceptionFilter } from './filters';
 import { RadiusGuard } from './guards';
-import type { RadiusService } from './radius.service';
+import { RadiusService } from './radius.service';
 
 @ApiTags('RADIUS')
 @Controller()

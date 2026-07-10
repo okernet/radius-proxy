@@ -8,7 +8,7 @@ import {
 	type RadiusAuthorizeRequestDto,
 	ResponseBuilder,
 } from 'src/radius/dto';
-import type { Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { RadiusAuthRejectedException, RadiusDisallowedException, RadiusUserNotFoundException } from './exceptions';
 
 @Injectable()

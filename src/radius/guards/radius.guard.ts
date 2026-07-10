@@ -1,5 +1,5 @@
 import { type CanActivate, type ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
-import type { EnvService } from 'src/env';
+import { EnvService } from 'src/env';
 
 @Injectable()
 export class RadiusGuard implements CanActivate {

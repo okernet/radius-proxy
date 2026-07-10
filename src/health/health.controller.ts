@@ -1,8 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import type { AccountingUploaderService } from '../sync/accounting-uploader.service';
-import type { CloudClientService } from '../sync/cloud-client.service';
-import type { SyncService } from '../sync/sync.service';
+import { AccountingUploaderService } from '../sync/accounting-uploader.service';
+import { CloudClientService } from '../sync/cloud-client.service';
+import { SyncService } from '../sync/sync.service';
 
 interface HealthStatus {
 	status: 'healthy' | 'degraded' | 'unhealthy';

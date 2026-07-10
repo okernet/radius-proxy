@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import type { EnvService } from 'src/env';
-import type { RadiusAccountingRequestDto } from 'src/radius/dto';
+import { EnvService } from 'src/env';
+import { RadiusAccountingRequestDto } from 'src/radius/dto';
 
 interface TokenResponse {
 	access_token: string;

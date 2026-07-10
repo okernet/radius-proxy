@@ -1,5 +1,5 @@
 import { type ArgumentsHost, Catch, type ExceptionFilter, HttpException, Logger } from '@nestjs/common';
-import type { FastifyReply, FastifyRequest } from 'fastify';
+import { FastifyReply, FastifyRequest } from 'fastify';
 import { RadiusAuthRejectedException, RadiusDisallowedException, RadiusUserNotFoundException } from '../exceptions';
 
 /**

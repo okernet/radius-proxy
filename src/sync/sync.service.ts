@@ -1,8 +1,8 @@
 import { Injectable, Logger, type OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LocalSubscription, SyncEntityType, SyncState, SyncStatus } from 'src/entities';
-import type { Repository } from 'typeorm';
-import type { CloudClientService, SyncedSubscription } from './cloud-client.service';
+import { Repository } from 'typeorm';
+import { CloudClientService, SyncedSubscription } from './cloud-client.service';
 
 @Injectable()
 export class SyncService implements OnModuleInit {

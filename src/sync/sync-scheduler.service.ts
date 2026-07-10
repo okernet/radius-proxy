@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import type { EnvService } from 'src/env';
-import type { AccountingUploaderService } from './accounting-uploader.service';
-import type { SyncService } from './sync.service';
+import { EnvService } from 'src/env';
+import { AccountingUploaderService } from './accounting-uploader.service';
+import { SyncService } from './sync.service';
 
 @Injectable()
 export class SyncSchedulerService {
