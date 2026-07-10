@@ -1,28 +1,28 @@
-import { Column, Entity, PrimaryColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('subscriptions')
 export class LocalSubscription {
-  @PrimaryColumn('varchar')
-  id: string;
+	@PrimaryColumn('varchar')
+	id: string;
 
-  @Column('varchar', { unique: true })
-  username: string;
+	@Column('varchar', { unique: true })
+	username: string;
 
-  @Column('varchar')
-  password: string;
+	@Column('varchar')
+	password: string;
 
-  @Column('boolean')
-  isActive: boolean;
+	@Column('boolean')
+	isActive: boolean;
 
-  @Column('varchar')
-  bandwidth: string;
+	@Column('varchar')
+	bandwidth: string;
 
-  @Column('datetime')
-  syncedAt: Date;
+	@Column('datetime')
+	syncedAt: Date;
 
-  @CreateDateColumn()
-  createdAt: Date;
+	@CreateDateColumn()
+	createdAt: Date;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+	@UpdateDateColumn()
+	updatedAt: Date;
 }

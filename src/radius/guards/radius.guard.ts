@@ -1,24 +1,24 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
-import { EnvService } from 'src/env';
+import { type CanActivate, type ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import type { EnvService } from 'src/env';
 
 @Injectable()
 export class RadiusGuard implements CanActivate {
-  constructor(private readonly envService: EnvService) {}
+	constructor(private readonly envService: EnvService) {}
 
-  canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest();
-    const apiKey = request.headers['x-api-key'];
+	canActivate(context: ExecutionContext): boolean {
+		const request = context.switchToHttp().getRequest();
+		const apiKey = request.headers['x-api-key'];
 
-    if (!apiKey) {
-      throw new UnauthorizedException('API key is missing');
-    }
+		if (!apiKey) {
+			throw new UnauthorizedException('API key is missing');
+		}
 
-    const validApiKey = this.envService.get('RADIUS_API_KEY');
+		const validApiKey = this.envService.get('RADIUS_API_KEY');
 
-    if (apiKey !== validApiKey) {
-      throw new UnauthorizedException('Invalid API key');
-    }
+		if (apiKey !== validApiKey) {
+			throw new UnauthorizedException('Invalid API key');
+		}
 
-    return true;
-  }
+		return true;
+	}
 }

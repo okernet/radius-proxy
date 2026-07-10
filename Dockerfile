@@ -1,10 +1,10 @@
 # Build stage
-FROM node:24-alpine AS builder
+FROM node:26-trixie-slim AS builder
 
 WORKDIR /usr/app
 
 # Install build dependencies for native modules (better-sqlite3)
-RUN apk add --no-cache python3 make g++
+RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ && rm -rf /var/lib/apt/lists/*
 
 # Copy package files
 COPY package.json package-lock.json ./
@@ -13,23 +13,19 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 # Copy source code
-COPY tsconfig.json nest-cli.json .swcrc tsconfig.build.json ./
+COPY tsconfig.json nest-cli.json .swcrc tsconfexiig.build.json ./
 COPY src ./src
 
 # Build the application
 RUN npm run build
 
 # Production stage
-FROM node:24-alpine AS production
+FROM node:26-trixie-slim AS production
 
 WORKDIR /usr/app
 
-# Install runtime dependencies for native modules
-RUN apk add --no-cache python3 make g++
-
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nestjs -u 1001
+# Install runtime dependencies for native modules and wget for healthcheck
+RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ wget && rm -rf /var/lib/apt/lists/*
 
 # Copy package files
 COPY package.json package-lock.json ./
@@ -39,19 +35,22 @@ RUN npm ci --omit=dev && \
     npm cache clean --force
 
 # Remove build tools after native module compilation
-RUN apk del python3 make g++
+RUN apt-get remove -y python3 make g++ && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy built application from builder stage
 COPY --from=builder /usr/app/dist/src ./dist
 
 # Create data directory for SQLite
-RUN mkdir -p /usr/app/data && chown -R nestjs:nodejs /usr/app/data
+RUN mkdir -p /usr/app/data && chown -R node:node /usr/app/data
 
 # Set ownership
-RUN chown -R nestjs:nodejs /usr/app
+RUN chown -R node:node /usr/app
 
 # Switch to non-root user
-USER nestjs
+USER node
 
 # Environment defaults
 ENV NODE_ENV=production

@@ -1,17 +1,24 @@
 services:
   rest-api:
-    image: node:24-alpine
+    image: node:26-trixie-slim
     ports:
       - "3080:3080"
     volumes:
       - ./:/usr/app
     working_dir: /usr/app
+    entrypoint:
+      - /bin/bash
+      - -c
+      - |
+        apt-get update &&
+        apt-get install -y --no-install-recommends wget &&
+        exec "$0" "$@"
     command: npm run dev
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:3080/health"]
       interval: 5s
       timeout: 3s
-      retries: 10
+      retries: 30
       start_period: 30s
 
   radius:

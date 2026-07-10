@@ -1,32 +1,32 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum AccountingQueueStatus {
-  PENDING = 'pending',
-  UPLOADING = 'uploading',
-  UPLOADED = 'uploaded',
-  FAILED = 'failed',
+	PENDING = 'pending',
+	UPLOADING = 'uploading',
+	UPLOADED = 'uploaded',
+	FAILED = 'failed',
 }
 
 @Entity('accounting_queue')
 export class AccountingQueue {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+	@PrimaryGeneratedColumn('uuid')
+	id: string;
 
-  @Column('text')
-  payload: string;
+	@Column('text')
+	payload: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
+	@CreateDateColumn()
+	createdAt: Date;
 
-  @Column('int', { default: 0 })
-  retryCount: number;
+	@Column('int', { default: 0 })
+	retryCount: number;
 
-  @Column({ type: 'varchar', default: AccountingQueueStatus.PENDING })
-  status: AccountingQueueStatus;
+	@Column({ type: 'varchar', default: AccountingQueueStatus.PENDING })
+	status: AccountingQueueStatus;
 
-  @Column('datetime', { nullable: true })
-  lastAttemptAt: Date | null;
+	@Column('datetime', { nullable: true })
+	lastAttemptAt: Date | null;
 
-  @Column('text', { nullable: true })
-  lastError: string | null;
+	@Column('text', { nullable: true })
+	lastError: string | null;
 }
