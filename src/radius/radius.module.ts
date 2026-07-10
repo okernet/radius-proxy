@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RadiusController } from './radius.controller';
 import { RadiusService } from './radius.service';
-import { LocalSubscription } from '../entities/subscription.entity';
-import { AccountingQueue } from '../entities/accounting-queue.entity';
+import { LocalSubscription } from 'src/entities';
+import { AccountingQueue } from 'src/entities';
 import { RadiusGuard } from './guards';
 
 @Module({

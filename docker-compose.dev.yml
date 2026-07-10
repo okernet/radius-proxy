@@ -2,7 +2,7 @@ services:
   rest-api:
     image: node:24-alpine
     ports:
-      - 3080:3080
+      - "3080:3080"
     volumes:
       - ./:/usr/app
     working_dir: /usr/app

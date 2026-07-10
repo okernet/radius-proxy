@@ -18,10 +18,7 @@ export class SyncStatus {
   @Column('datetime', { nullable: true })
   lastSyncAt: Date | null;
 
-  @Column({
-    type: 'varchar',
-    default: SyncState.IDLE,
-  })
+  @Column({ type: 'varchar', default: SyncState.IDLE })
   status: SyncState;
 
   @Column('text', { nullable: true })

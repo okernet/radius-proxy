@@ -1,8 +1,8 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LocalSubscription } from '../entities/subscription.entity';
-import { SyncStatus, SyncEntityType, SyncState } from '../entities/sync-status.entity';
+import { LocalSubscription } from 'src/entities';
+import { SyncStatus, SyncEntityType, SyncState } from 'src/entities';
 import { CloudClientService, SyncedSubscription } from './cloud-client.service';
 
 @Injectable()
