@@ -1,6 +1,6 @@
 {
   "name": "radius-proxy",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Local RADIUS proxy for offline authentication",
   "author": "",
   "private": true,
