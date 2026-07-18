@@ -11,6 +11,7 @@ export const envSchema = z.object({
 
 	// OkerCloud Auth (for cloud sync)
 	TENANT_ID: z.uuid(),
+	PARTNER_ID: z.uuid(),
 	OIDC_ISSUER: z.url(),
 	OIDC_CLIENT_ID: z.string(),
 	OIDC_CLIENT_SECRET: z.string(),

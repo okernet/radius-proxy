@@ -92,7 +92,7 @@ export class CloudClientService {
 		}
 
 		const query = params.toString();
-		const path = `/api/v1/tenants/${this.env.get('TENANT_ID')}/sync/subscriptions${query ? `?${query}` : ''}`;
+		const path = `/api/v1/tenants/${this.env.get('TENANT_ID')}/partners/${this.env.get('PARTNER_ID')}/sync/subscriptions${query ? `?${query}` : ''}`;
 
 		this.logger.debug(`Fetching subscriptions from cloud: ${path}`);
 		return this.fetch<SubscriptionSyncResponse>(path);
@@ -100,12 +100,12 @@ export class CloudClientService {
 
 	async fetchFullSnapshot(): Promise<SubscriptionSyncResponse> {
 		this.logger.debug('Fetching full subscription snapshot from cloud');
-		return this.fetch<SubscriptionSyncResponse>(`/api/v1/tenants/${this.env.get('TENANT_ID')}/sync/full-snapshot`);
+		return this.fetch<SubscriptionSyncResponse>(`/api/v1/tenants/${this.env.get('TENANT_ID')}/partners/${this.env.get('PARTNER_ID')}/sync/full-snapshot`);
 	}
 
 	async uploadAccountingBatch(records: RadiusAccountingRequestDto[]): Promise<AccountingBatchResponse> {
 		this.logger.debug(`Uploading ${records.length} accounting records to cloud`);
-		return this.fetch<AccountingBatchResponse>(`/api/v1/tenants/${this.env.get('TENANT_ID')}/sync/accounting/batch`, {
+		return this.fetch<AccountingBatchResponse>(`/api/v1/tenants/${this.env.get('TENANT_ID')}/partners/${this.env.get('PARTNER_ID')}/sync/accounting/batch`, {
 			method: 'POST',
 			body: JSON.stringify({ records }),
 		});
